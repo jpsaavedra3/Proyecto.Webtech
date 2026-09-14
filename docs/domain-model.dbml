@@ -1,0 +1,121 @@
+
+Table users {
+  id integer [pk]
+  name varchar
+  email varchar
+  password_digest varchar
+  role varchar [note: 'member, moderator']
+}
+
+Table neighborhoods {
+  id integer [pk]
+  name varchar
+}
+
+Table amenities {
+  id integer [pk]
+  name varchar
+}
+
+Table properties {
+  id integer [pk]
+  user_id integer [note: 'the host']
+  neighborhood_id integer
+  address varchar
+  property_type varchar
+  bedrooms integer
+  bathrooms integer
+  shared_spaces text
+}
+
+Table property_amenities {
+  id integer [pk]
+  property_id integer
+  amenity_id integer
+}
+
+Table listings {
+  id integer [pk]
+  property_id integer
+  monthly_rent decimal
+  deposit decimal
+  available_from date
+  minimum_stay_months integer
+  furnished boolean
+  private_bathroom boolean
+  description text
+  house_rules text
+  status varchar [note: 'draft, published, reserved, rented, withdrawn']
+}
+
+Table listing_photos {
+  id integer [pk]
+  listing_id integer
+  url varchar
+}
+
+Table applications {
+  id integer [pk]
+  listing_id integer
+  user_id integer [note: 'the seeker']
+  message text
+  move_in_date date
+  intended_stay_months integer
+  status varchar [note: 'pending, shortlisted, accepted, rejected, withdrawn']
+}
+
+Table visits {
+  id integer [pk]
+  application_id integer
+  scheduled_at datetime
+  status varchar [note: 'proposed, confirmed, cancelled, completed']
+}
+
+Table reviews {
+  id integer [pk]
+  visit_id integer
+  property_id integer
+  user_id integer
+  rating integer [note: '1 to 5']
+  comment text
+}
+
+Table saved_listings {
+  id integer [pk]
+  user_id integer
+  listing_id integer
+}
+
+Table reports {
+  id integer [pk]
+  listing_id integer
+  user_id integer [note: 'the member who reported it']
+  reason text
+  status varchar [note: 'pending, resolved, dismissed']
+}
+
+// Relationships
+
+Ref: properties.user_id > users.id
+Ref: properties.neighborhood_id > neighborhoods.id
+
+Ref: property_amenities.property_id > properties.id
+Ref: property_amenities.amenity_id > amenities.id
+
+Ref: listings.property_id > properties.id
+Ref: listing_photos.listing_id > listings.id
+
+Ref: applications.listing_id > listings.id
+Ref: applications.user_id > users.id
+
+Ref: visits.application_id > applications.id
+
+Ref: reviews.visit_id - visits.id
+Ref: reviews.property_id > properties.id
+Ref: reviews.user_id > users.id
+
+Ref: saved_listings.user_id > users.id
+Ref: saved_listings.listing_id > listings.id
+
+Ref: reports.listing_id > listings.id
+Ref: reports.user_id > users.id
