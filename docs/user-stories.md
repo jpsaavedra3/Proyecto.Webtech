@@ -1,11 +1,5 @@
 # Roomies — User Stories
 
-Assignment 1 · Web Technologies (ICC4130) · Universidad de los Andes
-Juan Pablo Saavedra
-
-The stories are grouped by role. A member acts as a **host** on the listings of their own
-properties and as a **seeker** on everybody else's, so the member section is split in two.
-
 ## Visitor (not signed in)
 
 1. As a visitor, I want to browse the published listings without creating an account, so that I can see what Roomies offers before signing up.
