@@ -1,5 +1,5 @@
 # Roomies
-**Name:** Juan Pablo Saavedra
+**Names:** Juan Pablo Saavedra and Julian Rodriguez
  
 ## Assignment 1
  
