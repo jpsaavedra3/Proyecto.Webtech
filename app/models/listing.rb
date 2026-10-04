@@ -6,6 +6,8 @@ class Listing < ApplicationRecord
   has_many :reports
 
   enum :status, { draft: 0, published: 1, reserved: 2, rented: 3, withdrawn: 4 }
+  scope :available_by, ->(date) { where("available_from <= ?", date) }
+  scope :rent_up_to, ->(amount) { where("monthly_rent <= ?", amount) }
 
   validates :available_from, :description, presence: true
   validates :monthly_rent, numericality: { greater_than: 0 }
