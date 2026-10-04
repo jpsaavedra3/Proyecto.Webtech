@@ -1,2 +1,12 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+.hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("/hero.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
