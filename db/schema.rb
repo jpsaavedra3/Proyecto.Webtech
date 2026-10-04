@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_04_132232) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_04_132753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_04_132232) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_amenities_on_name", unique: true
+  end
+
+  create_table "applications", force: :cascade do |t|
+    t.bigint "listing_id", null: false
+    t.bigint "user_id", null: false
+    t.text "message", null: false
+    t.date "move_in_date", null: false
+    t.integer "intended_stay_months", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listing_id", "user_id"], name: "index_applications_on_listing_id_and_user_id", unique: true
+    t.index ["listing_id"], name: "index_applications_on_listing_id"
+    t.index ["user_id"], name: "index_applications_on_user_id"
+  end
+
+  create_table "listing_photos", force: :cascade do |t|
+    t.bigint "listing_id", null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listing_id"], name: "index_listing_photos_on_listing_id"
   end
 
   create_table "listings", force: :cascade do |t|
@@ -68,6 +90,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_04_132232) do
     t.index ["property_id"], name: "index_property_amenities_on_property_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.bigint "listing_id", null: false
+    t.bigint "user_id", null: false
+    t.text "reason", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listing_id"], name: "index_reports_on_listing_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "visit_id", null: false
+    t.bigint "property_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "rating", null: false
+    t.text "comment", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_reviews_on_property_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+    t.index ["visit_id"], name: "index_reviews_on_visit_id", unique: true
+  end
+
+  create_table "saved_listings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "listing_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["listing_id"], name: "index_saved_listings_on_listing_id"
+    t.index ["user_id", "listing_id"], name: "index_saved_listings_on_user_id_and_listing_id", unique: true
+    t.index ["user_id"], name: "index_saved_listings_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email_address", null: false
@@ -77,9 +133,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_04_132232) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  create_table "visits", force: :cascade do |t|
+    t.bigint "application_id", null: false
+    t.datetime "scheduled_at", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_visits_on_application_id"
+  end
+
+  add_foreign_key "applications", "listings"
+  add_foreign_key "applications", "users"
+  add_foreign_key "listing_photos", "listings"
   add_foreign_key "listings", "properties"
   add_foreign_key "properties", "neighborhoods"
   add_foreign_key "properties", "users"
   add_foreign_key "property_amenities", "amenities"
   add_foreign_key "property_amenities", "properties"
+  add_foreign_key "reports", "listings"
+  add_foreign_key "reports", "users"
+  add_foreign_key "reviews", "properties"
+  add_foreign_key "reviews", "users"
+  add_foreign_key "reviews", "visits"
+  add_foreign_key "saved_listings", "listings"
+  add_foreign_key "saved_listings", "users"
+  add_foreign_key "visits", "applications"
 end
