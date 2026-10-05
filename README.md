@@ -1,34 +1,36 @@
 # Roomies
-**Names:** Juan Pablo Saavedra and Julian Rodriguez
- 
-## Assignment 1
- 
-This first assignment is analysis, design and static HTML
- 
-| Deliverable | Where |
-|---|---|
-| Landing page | `index.html`, `css/style.css`, `img/` |
-| User stories | `docs/user-stories.md` |
-| Domain model | `docs/domain-model.png` |
-| Design decisions | `docs/design-decisions.md` |
- 
-## How to open the landing page
- 
+
+Web Technologies 
+
+**Members:** Juan Pablo Saavedra · Julian Rodriguez
+
+## Setup
+
+Requires Ruby 4.0.4, PostgreSQL, Node.js and Yarn.
+
 ```bash
-git clone https://github.com/jpsaavedra3/Proyecto.Webtech.git
-cd Proyecto.Webtech
+bundle install
+yarn install
+bin/rails db:create
+bin/rails db:migrate
+bin/rails db:seed
 ```
- 
-Bootstrap 5.3 is loaded from a CDN, so the page needs a connection the first time it is
-opened. The photographs are in `img/` and are part of the repository.
- 
-## Repository structure 
+
+## Run
+
+```bash
+bin/dev
 ```
-index.html                  landing page
-css/style.css               the two custom rules on top of Bootstrap
-img/                        photographs used on the landing page
-docs/user-stories.md        user stories for the three roles
-docs/domain-model.png       relational diagram
-docs/design-decisions.md    decisions taken while modelling
-```
- 
+
+Then open http://localhost:3000.
+
+## Domain model
+
+Diagram: `docs/domain-model.png` ([dbdiagram.io](https://dbdiagram.io/d/6aa8004c36f99825648c9d10)).
+
+Changes since Assignment 1:
+
+- `users.email` is now `email_address`, the name the Rails 8 authentication generator uses in Assignment 4.
+- The `status` columns and `users.role` are integers, because they are implemented as enums.
+- Every table has `created_at` and `updated_at`, which Rails maintains.
+- Required columns are `NOT NULL`, and unique indexes enforce the domain rules: one application per seeker and listing, and one review per visit.
