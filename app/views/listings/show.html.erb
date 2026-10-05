@@ -1,0 +1,61 @@
+<% property = @listing.property %>
+<% content_for :title, "Room in #{property.neighborhood.name}" %>
+
+<section class="container py-5">
+  <div class="row g-4">
+    <div class="col-md-7">
+      <% @listing.listing_photos.each do |photo| %>
+        <%= image_tag photo.url, class: "img-fluid rounded mb-3", alt: "Photo of the room in #{property.neighborhood.name}" %>
+      <% end %>
+    </div>
+
+    <div class="col-md-5">
+      <span class="badge text-bg-secondary"><%= @listing.status.humanize %></span>
+      <h1 class="h2 mt-2">Room in <%= property.neighborhood.name %></h1>
+      <p class="lead mb-1"><%= number_to_currency(@listing.monthly_rent, unit: "$", precision: 0, delimiter: ".") %> per month</p>
+      <p class="text-muted">Deposit: <%= number_to_currency(@listing.deposit, unit: "$", precision: 0, delimiter: ".") %></p>
+      <ul class="list-unstyled">
+        <li>Available from <%= l(@listing.available_from, format: :long) %></li>
+        <li>Minimum stay: <%= pluralize(@listing.minimum_stay_months, "month") %></li>
+        <li><%= @listing.furnished? ? "Furnished" : "Unfurnished" %></li>
+        <li><%= @listing.private_bathroom? ? "Private bathroom" : "Shared bathroom" %></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="h4 mt-4">Description</h2>
+  <p><%= @listing.description %></p>
+
+  <% if @listing.house_rules.present? %>
+    <h2 class="h4">House rules</h2>
+    <p><%= @listing.house_rules %></p>
+  <% end %>
+
+  <h2 class="h4">The property</h2>
+  <p>
+    <%= link_to property.address, property %> ·
+    <%= link_to property.neighborhood.name, property.neighborhood %> ·
+    <%= property.property_type.humanize %>, <%= pluralize(property.bedrooms, "bedroom") %>,
+    <%= pluralize(property.bathrooms, "bathroom") %>
+  </p>
+
+  <h3 class="h5">Amenities</h3>
+  <% if property.amenities.empty? %>
+    <p class="text-muted">This property has no amenities listed.</p>
+  <% else %>
+    <ul class="list-inline">
+      <% property.amenities.each do |amenity| %>
+        <li class="list-inline-item badge text-bg-light border"><%= amenity.name %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <h2 class="h4 mt-4">Reviews</h2>
+  <% if property.reviews.empty? %>
+    <p class="text-muted">Nobody has reviewed this property yet.</p>
+  <% else %>
+    <%= render property.reviews %>
+  <% end %>
+
+  <%= link_to "All rooms", listings_path, class: "btn btn-outline-secondary mt-3" %>
+</section>

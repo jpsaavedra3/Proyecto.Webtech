@@ -1,0 +1,14 @@
+<div class="col-md-4">
+  <article class="card h-100">
+    <% photo = listing.listing_photos.first %>
+    <% if photo %>
+      <%= image_tag photo.url, class: "card-img-top", alt: "Room in #{listing.property.neighborhood.name}" %>
+    <% end %>
+    <div class="card-body">
+      <h3 class="card-title h5"><%= link_to listing.property.neighborhood.name, listing %></h3>
+      <p class="card-text mb-1"><%= number_to_currency(listing.monthly_rent, unit: "$", precision: 0, delimiter: ".") %> per month</p>
+      <p class="card-text text-muted mb-1">Available from <%= l(listing.available_from, format: :long) %></p>
+      <p class="card-text small mb-0"><%= listing.property.address %></p>
+    </div>
+  </article>
+</div>

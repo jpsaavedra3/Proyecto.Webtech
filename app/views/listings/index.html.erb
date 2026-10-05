@@ -1,0 +1,13 @@
+<% content_for :title, "Rooms" %>
+
+<section class="container py-5">
+  <h1>Available rooms</h1>
+
+  <% if @listings.empty? %>
+    <p class="text-muted">There are no published rooms right now.</p>
+  <% else %>
+    <div class="row g-4">
+      <%= render @listings %>
+    </div>
+  <% end %>
+</section>
