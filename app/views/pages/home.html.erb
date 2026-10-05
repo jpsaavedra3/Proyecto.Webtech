@@ -1,103 +1,70 @@
 <section class="hero text-white">
-<div class="container py-5 text-center">
-<h1>Find a room, not just an apartment</h1>
+  <div class="container py-5 text-center">
+    <h1>Find a room, not just an apartment</h1>
     <p class="lead">Roomies connects people who have a free room in a shared house
       with people who are looking for a place to live.</p>
-<a href="#search" class="btn btn-primary btn-lg">Find a room</a>
+    <a href="#search" class="btn btn-primary btn-lg">Find a room</a>
   </div>
 </section>
 
 <section id="search" class="container py-5">
   <h2>Search</h2>
-<p>Tell us what you are looking for and we will show you the rooms that match.</p>
-                                                                        <form class="row g-3">
-<div class="col-md-4">
-<label for="neighborhood" class="form-label">Neighborhood</label>
+  <p>Tell us what you are looking for and we will show you the rooms that match.</p>
+  <form class="row g-3" action="<%= listings_path %>" method="get">
+    <div class="col-md-4">
+      <label for="neighborhood" class="form-label">Neighborhood</label>
       <select class="form-select" id="neighborhood" name="neighborhood">
         <option value="">Any neighborhood</option>
-<option value="providencia">Providencia</option>
+        <option value="providencia">Providencia</option>
         <option value="nunoa">Ñuñoa</option>
-<option value="las-condes">Las Condes</option>
-        <option value="santiago-centro">Santiago Centro</option>
-</select>
+        <option value="las-condes">Las Condes</option>
+      </select>
     </div>
-<div class="col-md-4">
-<label for="max-rent" class="form-label">Maximum rent</label>
+    <div class="col-md-4">
+      <label for="max-rent" class="form-label">Maximum rent</label>
       <input type="number" class="form-control" id="max-rent" name="max_rent" placeholder="400000">
     </div>
-<div class="col-md-4">
-<label for="available-from" class="form-label">Available from</label>
+    <div class="col-md-4">
+      <label for="available-from" class="form-label">Available from</label>
       <input type="date" class="form-control" id="available-from" name="available_from">
     </div>
-<div class="col-12">
-<button type="submit" class="btn btn-primary">Search rooms</button>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Search rooms</button>
     </div>
-</form>
+  </form>
 </section>
 
 <section class="bg-light py-5">
-<div class="container">
-<h2>Featured rooms</h2>
-    <div class="row g-4">
-
-      <div class="col-md-4">
-        <article class="card h-100">
-          <%= image_tag "room-1.jpg", class: "card-img-top",
-                alt: "Bedroom with a black bed frame, a black and white geometric rug and framed prints on the wall" %>
-          <div class="card-body">
-            <h3 class="card-title h5">Providencia</h3>
-<p class="card-text mb-1">$320.000 per month</p>
-            <p class="card-text text-muted mb-0">Available from 1 November 2026</p>
-</div>
-        </article>
-</div>
-
-      <div class="col-md-4">
-        <article class="card h-100">
-          <%= image_tag "room-2.jpg", class: "card-img-top",
-                alt: "Bedroom with a dark grey wall, an upholstered double bed and a window looking over the city" %>
-          <div class="card-body">
-            <h3 class="card-title h5">Ñuñoa</h3>
-<p class="card-text mb-1">$270.000 per month</p>
-            <p class="card-text text-muted mb-0">Available from 15 November 2026</p>
-</div>
-        </article>
-</div>
-
-      <div class="col-md-4">
-        <article class="card h-100">
-          <%= image_tag "room-3.jpg", class: "card-img-top",
-                alt: "Bedroom with light green walls, hanging plants and framed pictures above the bed" %>
-          <div class="card-body">
-            <h3 class="card-title h5">Santiago Centro</h3>
-<p class="card-text mb-1">$250.000 per month</p>
-            <p class="card-text text-muted mb-0">Available from 1 December 2026</p>
-</div>
-        </article>
-</div>
-
-    </div>
-</div>
+  <div class="container">
+    <h2>Featured rooms</h2>
+    <% if @featured_listings.empty? %>
+      <p class="text-muted">There are no published rooms right now.</p>
+    <% else %>
+      <div class="row g-4">
+        <%= render @featured_listings %>
+      </div>
+    <% end %>
+    <%= link_to "See all rooms", listings_path, class: "btn btn-outline-primary mt-4" %>
+  </div>
 </section>
 
 <section class="container py-5">
-<h2>How it works</h2>
+  <h2>How it works</h2>
   <div class="row g-4">
     <div class="col-md-4">
       <h3 class="h5">1. Publish or search</h3>
-<p>If you have a free room, publish it with photographs, the rent and the date it
-becomes available. If you are looking for one, search by neighborhood, price and date.</p>
-</div>
+      <p>If you have a free room, publish it with photographs, the rent and the date it
+        becomes available. If you are looking for one, search by neighborhood, price and date.</p>
+    </div>
     <div class="col-md-4">
       <h3 class="h5">2. Apply</h3>
-<p>Send the host a short presentation with the date you want to move in and how long
-you plan to stay. The host reads every application and answers.</p>
-</div>
+      <p>Send the host a short presentation with the date you want to move in and how long
+        you plan to stay. The host reads every application and answers.</p>
+    </div>
     <div class="col-md-4">
       <h3 class="h5">3. Visit and move in</h3>
-<p>The host invites you to see the house. After the visit you can leave a review, and
-  the host chooses the housemate.</p>
-                       </div>
+      <p>The host invites you to see the house. After the visit you can leave a review, and
+        the host chooses the housemate.</p>
+    </div>
   </div>
-</section># frozen_string_literal: true
-
+</section>

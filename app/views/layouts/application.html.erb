@@ -26,10 +26,10 @@
       </button>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Publish a room</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Log in</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Sign up</a></li>
+          <li class="nav-item"><%= link_to "Rooms", listings_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Properties", properties_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Neighborhoods", neighborhoods_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Applications", applications_path, class: "nav-link" %></li>
         </ul>
       </div>
     </div>
