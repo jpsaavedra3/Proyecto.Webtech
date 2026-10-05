@@ -1,0 +1,24 @@
+<% content_for :title, "Properties" %>
+
+<section class="container py-5">
+  <h1>Properties</h1>
+
+  <% if @properties.empty? %>
+    <p class="text-muted">There are no properties yet.</p>
+  <% else %>
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Address</th>
+        <th>Neighborhood</th>
+        <th>Type</th>
+        <th>Bedrooms</th>
+        <th>Listings</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render @properties %>
+      </tbody>
+    </table>
+  <% end %>
+</section>

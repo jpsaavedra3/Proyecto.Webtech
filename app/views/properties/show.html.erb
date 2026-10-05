@@ -1,0 +1,44 @@
+<% content_for :title, @property.address %>
+
+<section class="container py-5">
+  <h1><%= @property.address %></h1>
+  <p class="lead">
+    <%= link_to @property.neighborhood.name, @property.neighborhood %> ·
+    <%= @property.property_type.humanize %> ·
+    <%= pluralize(@property.bedrooms, "bedroom") %> ·
+    <%= pluralize(@property.bathrooms, "bathroom") %>
+  </p>
+  <% if @property.shared_spaces.present? %>
+    <p>Shared spaces: <%= @property.shared_spaces %></p>
+  <% end %>
+  <p class="text-muted">Host: <%= @property.user.name %></p>
+
+  <h2 class="h4">Amenities</h2>
+  <% if @property.amenities.empty? %>
+    <p class="text-muted">This property has no amenities listed.</p>
+  <% else %>
+    <ul class="list-inline">
+      <% @property.amenities.each do |amenity| %>
+        <li class="list-inline-item badge text-bg-light border"><%= amenity.name %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <h2 class="h4 mt-4">Rooms in this property</h2>
+  <% if @listings.empty? %>
+    <p class="text-muted">No rooms are published right now.</p>
+  <% else %>
+    <div class="row g-4">
+      <%= render @listings %>
+    </div>
+  <% end %>
+
+  <h2 class="h4 mt-4">Reviews</h2>
+  <% if @property.reviews.empty? %>
+    <p class="text-muted">Nobody has reviewed this property yet.</p>
+  <% else %>
+    <%= render @property.reviews %>
+  <% end %>
+
+  <%= link_to "All properties", properties_path, class: "btn btn-outline-secondary mt-3" %>
+</section>

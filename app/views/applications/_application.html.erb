@@ -1,0 +1,9 @@
+<tr>
+  <td><%= link_to application.user.name, application %></td>
+  <td>
+    <%= link_to application.listing.property.neighborhood.name, application.listing %>
+    · <%= application.listing.property.address %>
+  </td>
+  <td><%= l(application.move_in_date, format: :long) %></td>
+  <td><span class="badge text-bg-secondary"><%= application.status.humanize %></span></td>
+</tr>

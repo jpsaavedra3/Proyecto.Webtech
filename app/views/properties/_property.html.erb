@@ -1,0 +1,7 @@
+<tr>
+  <td><%= link_to property.address, property %></td>
+  <td><%= link_to property.neighborhood.name, property.neighborhood %></td>
+  <td><%= property.property_type.humanize %></td>
+  <td><%= property.bedrooms %></td>
+  <td><%= property.listings.size %></td>
+</tr>

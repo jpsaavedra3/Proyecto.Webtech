@@ -1,0 +1,36 @@
+<% listing = @application.listing %>
+<% content_for :title, "Application from #{@application.user.name}" %>
+
+<section class="container py-5">
+  <span class="badge text-bg-secondary"><%= @application.status.humanize %></span>
+  <h1 class="h2 mt-2">Application from <%= @application.user.name %></h1>
+  <p>
+    For the <%= link_to "room in #{listing.property.neighborhood.name}", listing %>
+    at <%= listing.property.address %>
+  </p>
+
+  <ul class="list-unstyled">
+    <li>Sent on <%= l(@application.created_at.to_date, format: :long) %></li>
+    <li>Wants to move in on <%= l(@application.move_in_date, format: :long) %></li>
+    <li>Intended stay: <%= pluralize(@application.intended_stay_months, "month") %></li>
+  </ul>
+
+  <h2 class="h4">Message</h2>
+  <p><%= @application.message %></p>
+
+  <h2 class="h4 mt-4">Visits</h2>
+  <% if @visits.empty? %>
+    <p class="text-muted">No visits have been proposed yet.</p>
+  <% else %>
+    <ul class="list-group mb-3">
+      <% @visits.each do |visit| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <span><%= l(visit.scheduled_at, format: :long) %></span>
+          <span class="badge text-bg-light border"><%= visit.status.humanize %></span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= link_to "All applications", applications_path, class: "btn btn-outline-secondary mt-3" %>
+</section>

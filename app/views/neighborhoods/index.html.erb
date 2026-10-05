@@ -1,0 +1,18 @@
+<% content_for :title, "Neighborhoods" %>
+
+<section class="container py-5">
+  <h1>Neighborhoods</h1>
+
+  <% if @neighborhoods.empty? %>
+    <p class="text-muted">There are no neighborhoods yet.</p>
+  <% else %>
+    <ul class="list-group">
+      <% @neighborhoods.each do |neighborhood| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <%= link_to neighborhood.name, neighborhood %>
+          <span class="text-muted"><%= pluralize(neighborhood.properties.size, "property") %></span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</section>
