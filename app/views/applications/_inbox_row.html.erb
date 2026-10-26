@@ -1,0 +1,22 @@
+<tr id="<%= dom_id(application) %>">
+  <td><%= link_to application.user.name, application %></td>
+  <td>
+    <%= link_to application.listing.property.neighborhood.name, application.listing %>
+    · <%= application.listing.property.address %>
+  </td>
+  <td><%= l(application.move_in_date, format: :long) %></td>
+  <td><span class="badge text-bg-secondary"><%= application.status.humanize %></span></td>
+  <td>
+    <% if application.open? %>
+      <div class="d-flex gap-1">
+        <% if application.pending? %>
+          <%= button_to "Shortlist", shortlist_application_path(application), method: :patch,
+                        class: "btn btn-sm btn-outline-primary" %>
+        <% end %>
+        <%= button_to "Accept", accept_application_path(application), method: :patch, class: "btn btn-sm btn-success",
+                      form: { data: { turbo_confirm: "Accept this applicant? Every other open application on the room will be rejected." } } %>
+        <%= button_to "Reject", reject_application_path(application), method: :patch, class: "btn btn-sm btn-outline-danger" %>
+      </div>
+    <% end %>
+  </td>
+</tr>

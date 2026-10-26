@@ -1,9 +1,12 @@
 class ApplicationsController < ApplicationController
-  before_action :set_application, only: [ :show, :withdraw ]
+  before_action :set_application, only: [ :show, :withdraw, :shortlist, :reject, :accept ]
 
+  # The host's inbox (applications received on their rooms) and the seeker's list (applications sent).
   def index
-    @applications = Application.includes(:user, listing: { property: :neighborhood }).order(created_at: :desc)
-    @pending_count = Application.pending.count
+    @received = current_user.received_applications.includes(:user, listing: { property: :neighborhood })
+                            .order(created_at: :desc)
+    @sent = current_user.applications.includes(:user, listing: { property: :neighborhood }).order(created_at: :desc)
+    @pending_count = @received.pending.count
   end
 
   def show
@@ -30,6 +33,23 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  def shortlist
+    @application.shortlisted! if @application.pending?
+    answer
+  end
+
+  def reject
+    @application.rejected! if @application.open?
+    answer
+  end
+
+  def accept
+    @application.accept!
+    answer
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to applications_path, alert: e.record.errors.full_messages.to_sentence, status: :see_other
+  end
+
   private
 
   def set_application
@@ -38,5 +58,15 @@ class ApplicationsController < ApplicationController
 
   def application_params
     params.expect(application: [ :message, :move_in_date, :intended_stay_months ])
+  end
+
+  # Re-renders every row of the room (accepting rejects the others too) and the pending count.
+  def answer
+    @changed = @application.listing.applications.includes(:user, listing: { property: :neighborhood })
+    @pending_count = current_user.received_applications.pending.count
+    respond_to do |format|
+      format.turbo_stream { render :answer }
+      format.html { redirect_to applications_path, status: :see_other }
+    end
   end
 end

@@ -1,0 +1,4 @@
+<% @changed.each do |application| %>
+  <%= turbo_stream.replace application, partial: "applications/inbox_row", locals: { application: application } %>
+<% end %>
+<%= turbo_stream.update "pending_count", pluralize(@pending_count, "application") %>
