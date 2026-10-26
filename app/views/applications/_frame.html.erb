@@ -1,0 +1,46 @@
+<%= turbo_frame_tag "application" do %>
+  <div class="border rounded p-3">
+    <% if listing.property.user == current_user %>
+      <p class="mb-0 text-muted">This is your room, so you cannot apply to it.</p>
+    <% elsif application.persisted? %>
+      <p class="mb-1">You applied on <%= l(application.created_at.to_date, format: :long) %>.</p>
+      <p class="mb-2">Status: <span class="badge text-bg-secondary"><%= application.status.humanize %></span></p>
+      <% if application.open? %>
+        <%= button_to "Withdraw my application", withdraw_application_path(application), method: :patch,
+                      class: "btn btn-sm btn-outline-danger", form: { data: { turbo_confirm: "Withdraw your application?" } } %>
+      <% end %>
+    <% elsif listing.published? %>
+      <h2 class="h5">Apply for this room</h2>
+      <% %i[base listing user_id].each do |attribute| %>
+        <% application.errors.full_messages_for(attribute).each do |message| %>
+          <div class="alert alert-danger py-2"><%= message %></div>
+        <% end %>
+      <% end %>
+
+      <%= form_with model: [ listing, application ] do |f| %>
+        <div class="mb-2">
+          <%= f.label :message, "Introduce yourself", class: "form-label" %>
+          <%= f.textarea :message, class: field_class(application, :message), rows: 3, required: true,
+                         placeholder: "Who you are, what you do and why this room" %>
+          <%= field_error(application, :message) %>
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <%= f.label :move_in_date, class: "form-label" %>
+            <%= f.date_field :move_in_date, class: field_class(application, :move_in_date), min: Date.current, required: true %>
+            <%= field_error(application, :move_in_date) %>
+          </div>
+          <div class="col-6">
+            <%= f.label :intended_stay_months, "Stay (months)", class: "form-label" %>
+            <%= f.number_field :intended_stay_months, class: field_class(application, :intended_stay_months), min: 1,
+                               placeholder: "12", required: true %>
+            <%= field_error(application, :intended_stay_months) %>
+          </div>
+        </div>
+        <%= f.submit "Send application", class: "btn btn-primary" %>
+      <% end %>
+    <% else %>
+      <p class="mb-0 text-muted">This room is not accepting applications.</p>
+    <% end %>
+  </div>
+<% end %>
