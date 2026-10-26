@@ -1,0 +1,16 @@
+<%= form_with model: amenity do |f| %>
+  <div class="mb-3">
+    <%= f.label :name, "Amenity name", class: "form-label" %>
+    <%= f.text_field :name,
+          class: field_class(amenity, :name),
+          placeholder: "e.g. Wi-Fi",
+          required: true %>
+    <%= field_error(amenity, :name) %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit "Save amenity", class: "btn btn-primary" %>
+    <%= link_to "Cancel", amenities_path,
+          class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>
