@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_142444) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_144413) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,14 +73,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_142444) do
     t.index ["user_id"], name: "index_applications_on_user_id"
   end
 
-  create_table "listing_photos", force: :cascade do |t|
-    t.bigint "listing_id", null: false
-    t.string "url", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["listing_id"], name: "index_listing_photos_on_listing_id"
-  end
-
   create_table "listings", force: :cascade do |t|
     t.bigint "property_id", null: false
     t.decimal "monthly_rent", null: false
@@ -89,8 +81,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_142444) do
     t.integer "minimum_stay_months", null: false
     t.boolean "furnished", default: false, null: false
     t.boolean "private_bathroom", default: false, null: false
-    t.text "description", null: false
-    t.text "house_rules"
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -184,7 +174,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_142444) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "applications", "listings"
   add_foreign_key "applications", "users"
-  add_foreign_key "listing_photos", "listings"
   add_foreign_key "listings", "properties"
   add_foreign_key "properties", "neighborhoods"
   add_foreign_key "properties", "users"

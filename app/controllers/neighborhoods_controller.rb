@@ -5,6 +5,6 @@ class NeighborhoodsController < ApplicationController
 
   def show
     @neighborhood = Neighborhood.find(params[:id])
-    @listings = @neighborhood.listings.published.includes(:listing_photos, property: :neighborhood)
+    @listings = @neighborhood.listings.published.with_attached_photos.includes(property: :neighborhood)
   end
 end

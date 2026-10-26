@@ -1,3 +1,8 @@
+
+def attach_photo(listing, file)
+  listing.photos.attach(io: File.open(Rails.root.join("app/assets/images", file)), filename: file, content_type: "image/jpeg")
+end
+
 puts "Cleaning up database..."
 
 Report.destroy_all
@@ -5,7 +10,6 @@ SavedListing.destroy_all
 Review.destroy_all
 Visit.destroy_all
 Application.destroy_all
-ListingPhoto.destroy_all
 Listing.destroy_all
 PropertyAmenity.destroy_all
 Property.destroy_all
@@ -117,7 +121,7 @@ listing4 = Listing.create!(
   private_bathroom: true,
   description: "Quiet bedroom at the back of the apartment, with its own bathroom and lots of storage.",
   house_rules: "No smoking, no pets, no parties.",
-  status: :reserved
+  status: :published
 )
 
 listing5 = Listing.create!(
@@ -146,14 +150,13 @@ listing6 = Listing.create!(
   status: :withdrawn
 )
 
-puts "Creating listing photos..."
-ListingPhoto.create!(listing: listing1, url: "room-1.jpg")
-ListingPhoto.create!(listing: listing2, url: "room-2.jpg")
-ListingPhoto.create!(listing: listing3, url: "room-3.jpg")
-ListingPhoto.create!(listing: listing4, url: "room-2.jpg")
-ListingPhoto.create!(listing: listing5, url: "room-3.jpg")
-ListingPhoto.create!(listing: listing6, url: "room-1.jpg")
-
+puts "Attaching photos..."
+attach_photo(listing1, "room-1.jpg")
+attach_photo(listing2, "room-2.jpg")
+attach_photo(listing3, "room-3.jpg")
+attach_photo(listing4, "room-2.jpg")
+attach_photo(listing5, "room-3.jpg")
+attach_photo(listing6, "room-1.jpg")
 
 puts "Creating more published listings..."
 property4 = Property.create!(
@@ -193,9 +196,8 @@ listing8 = Listing.create!(
   status: :published
 )
 
-ListingPhoto.create!(listing: listing7, url: "room-1.jpg")
-ListingPhoto.create!(listing: listing8, url: "room-3.jpg")
-
+attach_photo(listing7, "room-1.jpg")
+attach_photo(listing8, "room-3.jpg")
 
 listing9 = Listing.create!(
   property: property4,
@@ -209,7 +211,7 @@ listing9 = Listing.create!(
   house_rules: "No smoking indoors. Pets are welcome.",
   status: :draft
 )
-ListingPhoto.create!(listing: listing9, url: "room-2.jpg")
+attach_photo(listing9, "room-2.jpg")
 
 puts "Creating applications..."
 # listing1: three applications competing for the same room
@@ -237,7 +239,7 @@ application3 = Application.create!(
   message: "I am looking for a long-term place with good access to public transportation.",
   move_in_date: Date.current + 45.days,
   intended_stay_months: 12,
-  status: :rejected
+  status: :shortlisted
 )
 
 # listing2: one withdrawn, one shortlisted
@@ -259,14 +261,14 @@ application5 = Application.create!(
   status: :shortlisted
 )
 
-# listing4: one accepted, the other rejected when the host chose
+# listing4: two shortlisted applicants; the host visits with both and chooses one
 application6 = Application.create!(
   listing: listing4,
   user: tomas,
   message: "I am interested in living in Ñuñoa and this room fits what I am looking for.",
   move_in_date: Date.current + 25.days,
   intended_stay_months: 12,
-  status: :accepted,
+  status: :shortlisted,
   created_at: 20.days.ago
 )
 
@@ -276,7 +278,7 @@ application7 = Application.create!(
   message: "I would like a room with a private bathroom close to the metro.",
   move_in_date: Date.current + 25.days,
   intended_stay_months: 6,
-  status: :rejected,
+  status: :shortlisted,
   created_at: 25.days.ago
 )
 
@@ -286,6 +288,12 @@ Visit.create!(application: application5, scheduled_at: 4.days.from_now, status: 
 Visit.create!(application: application3, scheduled_at: 2.days.from_now, status: :cancelled)
 visit_tomas = Visit.create!(application: application6, scheduled_at: 10.days.ago, status: :completed)
 visit_miguel = Visit.create!(application: application7, scheduled_at: 12.days.ago, status: :completed)
+
+puts "Answering applications..."
+application3.rejected!
+application6.accepted!
+application7.rejected!
+listing4.reserved!
 
 puts "Creating reviews..."
 Review.create!(

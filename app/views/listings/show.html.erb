@@ -4,8 +4,9 @@
 <section class="container py-5">
   <div class="row g-4">
     <div class="col-md-7">
-      <% @listing.listing_photos.each do |photo| %>
-        <%= image_tag photo.url, class: "img-fluid rounded mb-3", alt: "Photo of the room in #{property.neighborhood.name}" %>
+      <% @listing.photos.each do |photo| %>
+        <%= image_tag photo.variant(resize_to_limit: [ 1200, 900 ]), class: "img-fluid rounded mb-3",
+                      alt: "Photo of the room in #{property.neighborhood.name}" %>
       <% end %>
     </div>
 
@@ -20,18 +21,21 @@
         <li><%= @listing.furnished? ? "Furnished" : "Unfurnished" %></li>
         <li><%= @listing.private_bathroom? ? "Private bathroom" : "Shared bathroom" %></li>
       </ul>
+
+      <%= render "listings/host_actions", listing: @listing %>
+      <%= render "applications/frame", listing: @listing, application: @application %>
     </div>
   </div>
 
   <h2 class="h4 mt-4">Description</h2>
-  <p><%= @listing.description %></p>
+  <%= @listing.description %>
 
   <% if @listing.house_rules.present? %>
-    <h2 class="h4">House rules</h2>
-    <p><%= @listing.house_rules %></p>
+    <h2 class="h4 mt-4">House rules</h2>
+    <%= @listing.house_rules %>
   <% end %>
 
-  <h2 class="h4">The property</h2>
+  <h2 class="h4 mt-4">The property</h2>
   <p>
     <%= link_to property.address, property %> ·
     <%= link_to property.neighborhood.name, property.neighborhood %> ·
