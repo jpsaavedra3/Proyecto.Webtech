@@ -1,12 +1,16 @@
 # Roomies
 
-Web Technologies 
+Web Technologies
 
 **Members:** Juan Pablo Saavedra · Julian Rodriguez
 
 ## Setup
 
-Requires Ruby 4.0.4, PostgreSQL, Node.js and Yarn.
+Requires Ruby 4.0.4, PostgreSQL, Node.js, Yarn and libvips (for image variants):
+
+```bash
+sudo apt-get install -y libvips
+```
 
 ```bash
 bundle install
@@ -22,7 +26,11 @@ bin/rails db:seed
 bin/dev
 ```
 
-Then open http://localhost:3000.
+Then open http://localhost:3000. There is no login yet: choose the current user in the navbar.
+
+## Uploads
+
+Listing photos accept JPEG, PNG or WebP, up to 5 MB each.
 
 ## Domain model
 
@@ -34,3 +42,4 @@ Changes since Assignment 1:
 - The `status` columns and `users.role` are integers, because they are implemented as enums.
 - Every table has `created_at` and `updated_at`, which Rails maintains.
 - Required columns are `NOT NULL`, and unique indexes enforce the domain rules: one application per seeker and listing, and one review per visit.
+- `listing_photos` was replaced by Active Storage, and `listings.description` and `house_rules` by Action Text.
