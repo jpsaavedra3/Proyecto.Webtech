@@ -12,6 +12,7 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
 
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
 
@@ -29,14 +30,26 @@
           <li class="nav-item"><%= link_to "Rooms", listings_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Properties", properties_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Neighborhoods", neighborhoods_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Amenities", amenities_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Applications", applications_path, class: "nav-link" %></li>
         </ul>
+        <%= form_with url: current_user_path, method: :patch, class: "ms-lg-3" do |f| %>
+          <%= f.label :user_id, "Acting as", class: "visually-hidden" %>
+          <%= f.select :user_id, options_from_collection_for_select(User.order(:name), :id, :name, current_user&.id),
+                       {}, class: "form-select form-select-sm", onchange: "this.form.requestSubmit()" %>
+        <% end %>
       </div>
     </div>
   </nav>
 </header>
 
 <main>
+  <% flash.each do |type, message| %>
+    <div class="container mt-3">
+      <div class="alert <%= type == "notice" ? "alert-success" : "alert-danger" %>" role="alert"><%= message %></div>
+    </div>
+  <% end %>
+
   <%= yield %>
 </main>
 

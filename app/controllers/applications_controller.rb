@@ -1,11 +1,13 @@
-class ApplicationsController < ApplicationController
-  def index
-    @applications = Application.includes(:user, listing: { property: :neighborhood }).order(created_at: :desc)
-    @pending_count = Application.pending.count
-  end
+class ApplicationController < ActionController::Base
+  allow_browser versions: :modern
 
-  def show
-    @application = Application.find(params[:id])
-    @visits = @application.visits.order(:scheduled_at)
+  stale_when_importmap_changes
+
+  helper_method :current_user
+
+  private
+
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id]) || User.order(:id).first
   end
 end
