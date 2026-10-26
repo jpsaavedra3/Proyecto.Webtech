@@ -1,0 +1,7 @@
+<% content_for :title, "Edit review" %>
+
+<section class="container py-5">
+  <h1>Edit your review of <%= @review.property.address %></h1>
+  <%= render "form", review: @review, url: review_path(@review), visit: nil %>
+  <%= link_to "Back", @review.property, class: "btn btn-link mt-2" %>
+</section>

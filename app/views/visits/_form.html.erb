@@ -1,0 +1,13 @@
+<%= form_with model: (visit.persisted? ? visit : [ visit.application, visit ]) do |f| %>
+  <% visit.errors.full_messages_for(:application).each do |message| %>
+    <div class="alert alert-danger py-2"><%= message %></div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :scheduled_at, "Date and time", class: "form-label" %>
+    <%= f.datetime_field :scheduled_at, class: field_class(visit, :scheduled_at), min: Time.current, required: true %>
+    <%= field_error(visit, :scheduled_at) %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

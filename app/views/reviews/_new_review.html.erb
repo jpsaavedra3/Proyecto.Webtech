@@ -1,0 +1,6 @@
+<% if visit %>
+  <div class="border rounded p-3 mt-3">
+    <h3 class="h5">Review your visit of <%= l(visit.scheduled_at.to_date, format: :long) %></h3>
+    <%= render "reviews/form", review: Review.new, url: property_reviews_path(property), visit: visit %>
+  </div>
+<% end %>

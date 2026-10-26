@@ -1,0 +1,8 @@
+<% content_for :title, "Propose a visit" %>
+
+<section class="container py-5">
+  <h1>Propose a visit</h1>
+  <p>To <%= @application.user.name %>, for the room at <%= @application.listing.property.address %>.</p>
+  <%= render "form", visit: @visit %>
+  <%= link_to "Back", @application, class: "btn btn-link mt-2" %>
+</section>

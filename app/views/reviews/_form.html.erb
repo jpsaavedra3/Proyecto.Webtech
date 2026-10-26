@@ -1,0 +1,18 @@
+<%= form_with model: review, url: url do |f| %>
+  <% if visit %>
+    <%= f.hidden_field :visit_id, value: visit.id %>
+  <% end %>
+
+  <div class="mb-2">
+    <%= f.label :rating, "Rating", class: "form-label" %>
+    <%= f.select :rating, (1..5).to_a.reverse, { prompt: "From 1 to 5" },
+                 class: field_class(review, :rating, "form-select"), required: true %>
+    <%= field_error(review, :rating) %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :comment, "Did the place match the listing?", class: "form-label" %>
+    <%= f.textarea :comment, class: field_class(review, :comment), rows: 3, required: true %>
+    <%= field_error(review, :comment) %>
+  </div>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

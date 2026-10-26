@@ -1,0 +1,8 @@
+<% content_for :title, "Reschedule the visit" %>
+
+<section class="container py-5">
+  <h1>Reschedule the visit</h1>
+  <p>The new date goes back to "proposed" until <%= @visit.application.user.name %> confirms it.</p>
+  <%= render "form", visit: @visit %>
+  <%= link_to "Back", @visit.application, class: "btn btn-link mt-2" %>
+</section>

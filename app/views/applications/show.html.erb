@@ -19,14 +19,29 @@
   <p><%= @application.message %></p>
 
   <h2 class="h4 mt-4">Visits</h2>
+  <% if @application.shortlisted? %>
+    <%= link_to "Propose a visit", new_application_visit_path(@application), class: "btn btn-sm btn-primary mb-3" %>
+  <% end %>
   <% if @visits.empty? %>
     <p class="text-muted">No visits have been proposed yet.</p>
   <% else %>
     <ul class="list-group mb-3">
       <% @visits.each do |visit| %>
-        <li class="list-group-item d-flex justify-content-between">
+        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap gap-2">
           <span><%= l(visit.scheduled_at, format: :long) %></span>
           <span class="badge text-bg-light border"><%= visit.status.humanize %></span>
+          <div class="d-flex gap-1">
+            <% if visit.proposed? %>
+              <%= button_to "Confirm", confirm_visit_path(visit), method: :patch, class: "btn btn-sm btn-success" %>
+            <% end %>
+            <% if visit.confirmed? %>
+              <%= button_to "Mark as completed", complete_visit_path(visit), method: :patch, class: "btn btn-sm btn-primary" %>
+            <% end %>
+            <% if visit.proposed? || visit.confirmed? %>
+              <%= link_to "Reschedule", edit_visit_path(visit), class: "btn btn-sm btn-outline-secondary" %>
+              <%= button_to "Cancel", cancel_visit_path(visit), method: :patch, class: "btn btn-sm btn-outline-danger" %>
+            <% end %>
+          </div>
         </li>
       <% end %>
     </ul>
