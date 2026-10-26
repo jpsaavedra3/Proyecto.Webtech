@@ -1,0 +1,21 @@
+<% if listing.property.user == current_user %>
+  <div class="border rounded p-3 mb-3">
+    <p class="fw-semibold mb-2">You are the host of this room</p>
+    <div class="d-flex flex-wrap gap-2">
+      <%= link_to "Applications", applications_path, class: "btn btn-sm btn-outline-primary" %>
+      <%= link_to "Edit", edit_listing_path(listing), class: "btn btn-sm btn-outline-secondary" %>
+      <% if listing.draft? %>
+        <%= button_to "Publish", publish_listing_path(listing), method: :patch, class: "btn btn-sm btn-success" %>
+      <% end %>
+      <% if listing.reserved? %>
+        <%= button_to "Mark as rented", mark_rented_listing_path(listing), method: :patch, class: "btn btn-sm btn-primary" %>
+      <% end %>
+      <% unless listing.withdrawn? || listing.rented? %>
+        <%= button_to "Withdraw", withdraw_listing_path(listing), method: :patch, class: "btn btn-sm btn-outline-danger",
+                      form: { data: { turbo_confirm: "Withdraw this room? Its open applications will be rejected." } } %>
+      <% end %>
+      <%= button_to "Delete", listing, method: :delete, class: "btn btn-sm btn-outline-danger",
+                    form: { data: { turbo_confirm: "Delete this room?" } } %>
+    </div>
+  </div>
+<% end %>

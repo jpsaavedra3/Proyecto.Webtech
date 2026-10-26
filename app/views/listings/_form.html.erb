@@ -1,0 +1,61 @@
+<%= form_with model: (listing.persisted? ? listing : [ listing.property, listing ]) do |f| %>
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <%= f.label :monthly_rent, "Monthly rent (CLP)", class: "form-label" %>
+      <%= f.number_field :monthly_rent, class: field_class(listing, :monthly_rent), min: 1, placeholder: "350000", required: true %>
+      <%= field_error(listing, :monthly_rent) %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :deposit, "Deposit (CLP)", class: "form-label" %>
+      <%= f.number_field :deposit, class: field_class(listing, :deposit), min: 0, placeholder: "350000", required: true %>
+      <%= field_error(listing, :deposit) %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <%= f.label :available_from, class: "form-label" %>
+      <%= f.date_field :available_from, class: field_class(listing, :available_from), min: (Date.current if listing.new_record?),
+                       required: true %>
+      <%= field_error(listing, :available_from) %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :minimum_stay_months, "Minimum stay (months)", class: "form-label" %>
+      <%= f.number_field :minimum_stay_months, class: field_class(listing, :minimum_stay_months), min: 1, placeholder: "6",
+                         required: true %>
+      <%= field_error(listing, :minimum_stay_months) %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="form-check form-check-inline">
+      <%= f.check_box :furnished, class: "form-check-input" %>
+      <%= f.label :furnished, class: "form-check-label" %>
+    </div>
+    <div class="form-check form-check-inline">
+      <%= f.check_box :private_bathroom, class: "form-check-input" %>
+      <%= f.label :private_bathroom, class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.rich_textarea :description, class: field_class(listing, :description) %>
+    <%= field_error(listing, :description) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :house_rules, class: "form-label" %>
+    <%= f.rich_textarea :house_rules, class: field_class(listing, :house_rules) %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :photos, class: "form-label" %>
+    <%= f.file_field :photos, multiple: true, include_hidden: false, accept: "image/jpeg,image/png,image/webp",
+                     class: field_class(listing, :photos) %>
+    <div class="form-text">JPEG, PNG or WebP, up to 5 MB each. Choosing new photos replaces the current ones.</div>
+    <%= field_error(listing, :photos) %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

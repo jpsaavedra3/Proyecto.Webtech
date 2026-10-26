@@ -1,0 +1,7 @@
+<% content_for :title, "New room" %>
+
+<section class="container py-5">
+  <h1>New room in <%= @property.address %></h1>
+  <%= render "form", listing: @listing %>
+  <%= link_to "Back", @property, class: "btn btn-link mt-2" %>
+</section>
