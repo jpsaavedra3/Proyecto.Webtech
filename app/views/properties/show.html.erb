@@ -13,6 +13,13 @@
   <% end %>
   <p class="text-muted">Host: <%= @property.user.name %></p>
 
+  <div class="d-flex gap-2 mb-4">
+    <%= link_to "Add a room", new_property_listing_path(@property), class: "btn btn-primary" %>
+    <%= link_to "Edit", edit_property_path(@property), class: "btn btn-outline-secondary" %>
+    <%= button_to "Delete", @property, method: :delete, class: "btn btn-outline-danger",
+                  form: { data: { turbo_confirm: "Delete this property?" } } %>
+  </div>
+
   <h2 class="h4">Amenities</h2>
   <% if @property.amenities.empty? %>
     <p class="text-muted">This property has no amenities listed.</p>
@@ -25,6 +32,9 @@
   <% end %>
 
   <h2 class="h4 mt-4">Rooms in this property</h2>
+  <% if @property.user == current_user %>
+    <p class="text-muted small">You are the host, so you also see the rooms that are not published.</p>
+  <% end %>
   <% if @listings.empty? %>
     <p class="text-muted">No rooms are published right now.</p>
   <% else %>
@@ -39,6 +49,7 @@
   <% else %>
     <%= render @property.reviews %>
   <% end %>
+  <%= render "reviews/new_review", property: @property, visit: @reviewable_visit %>
 
   <%= link_to "All properties", properties_path, class: "btn btn-outline-secondary mt-3" %>
 </section>
