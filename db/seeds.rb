@@ -18,10 +18,12 @@ Neighborhood.destroy_all
 User.destroy_all
 
 puts "Creating users..."
-miguel = User.create!(name: "Miguel Cervantes", email_address: "mcervantes1@example.com", role: :member)
-tomas = User.create!(name: "Tomás Rivas", email_address: "trivas1@example.com", role: :member)
-cata = User.create!(name: "Cata Perez", email_address: "cperez1@example.com", role: :member)
-diego = User.create!(name: "Diego Ortuzar", email_address: "dortuzar1@example.com", role: :moderator)
+# Every user has the password "roomies123".
+miguel = User.create!(name: "Miguel Cervantes", email_address: "mcervantes1@example.com", password: "roomies123", role: :member)
+tomas = User.create!(name: "Tomás Rivas", email_address: "trivas1@example.com", password: "roomies123", role: :member)
+cata = User.create!(name: "Cata Perez", email_address: "cperez1@example.com", password: "roomies123", role: :member)
+diego = User.create!(name: "Diego Ortuzar", email_address: "dortuzar1@example.com", password: "roomies123", role: :member)
+User.create!(name: "Sofía Mella", email_address: "smella1@example.com", password: "roomies123", role: :moderator)
 
 puts "Creating neighborhoods..."
 providencia = Neighborhood.create!(name: "Providencia")

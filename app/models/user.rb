@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_secure_password
+  has_many :sessions, dependent: :destroy
   has_many :properties
   has_many :listings, through: :properties
   has_many :received_applications, through: :listings, source: :applications
@@ -10,8 +12,11 @@ class User < ApplicationRecord
 
   enum :role, { member: 0, moderator: 1 }
 
+  normalizes :email_address, with: ->(e) { e.strip.downcase }
+
   validates :name, presence: true
   validates :email_address, presence: true, uniqueness: true
+  validates :bio, length: { maximum: 500 }
 
   # A completed visit of this user to the property that has not been reviewed yet.
   def reviewable_visit_for(property)

@@ -1,4 +1,5 @@
 class ListingsController < ApplicationController
+  allow_unauthenticated_access only: [ :index, :show ]
   before_action :set_listing, only: [ :show, :edit, :update, :destroy, :publish, :withdraw, :mark_rented ]
 
   def index
