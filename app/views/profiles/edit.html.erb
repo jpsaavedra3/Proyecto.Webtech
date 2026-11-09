@@ -1,0 +1,37 @@
+<% content_for :title, "My profile" %>
+
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <h1 class="mb-4">My profile</h1>
+
+      <%= form_with model: @user, url: profile_path, method: :patch do |form| %>
+        <div class="mb-3">
+          <%= form.label :name, class: "form-label" %>
+          <%= form.text_field :name, required: true, class: field_class(@user, :name) %>
+          <%= field_error(@user, :name) %>
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <%= form.label :email_address, class: "form-label" %>
+            <%= form.email_field :email_address, required: true, class: field_class(@user, :email_address) %>
+            <%= field_error(@user, :email_address) %>
+          </div>
+          <div class="col-md-6">
+            <%= form.label :phone, class: "form-label" %>
+            <%= form.telephone_field :phone, placeholder: "+56 9 1234 5678", class: field_class(@user, :phone) %>
+          </div>
+        </div>
+        <div class="mb-3">
+          <%= form.label :bio, "About me", class: "form-label" %>
+          <%= form.textarea :bio, rows: 4, maxlength: 500, class: field_class(@user, :bio),
+                            placeholder: "What you study or do, your routine, what you look for in a housemate" %>
+          <%= field_error(@user, :bio) %>
+        </div>
+        <%= form.submit "Save profile", class: "btn btn-primary" %>
+      <% end %>
+
+      <p class="text-muted small mt-3">Role: <%= @user.role.humanize %></p>
+    </div>
+  </div>
+</section>
