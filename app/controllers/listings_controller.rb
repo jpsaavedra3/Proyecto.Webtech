@@ -7,21 +7,19 @@ class ListingsController < ApplicationController
   end
 
   def show
-    if @listing.draft? && @listing.property.user != current_user
-      redirect_to listings_path, alert: "This listing has not been published yet."
-    else
-      @application = @listing.applications.find_by(user: current_user) || Application.new
-    end
+    @application = @listing.applications.find_by(user: current_user) || Application.new
   end
 
   def new
     @property = Property.find(params[:property_id])
     @listing = @property.listings.new
+    authorize @listing
   end
 
   def create
     @property = Property.find(params[:property_id])
     @listing = @property.listings.new(listing_params)
+    authorize @listing
     if @listing.save
       redirect_to @listing, notice: "Room created as a draft. Publish it when it is ready."
     else
@@ -64,6 +62,7 @@ class ListingsController < ApplicationController
 
   def set_listing
     @listing = Listing.find(params[:id])
+    authorize @listing
   end
 
   def listing_params

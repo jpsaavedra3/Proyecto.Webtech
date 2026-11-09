@@ -1,11 +1,13 @@
 class ApplicationsController < ApplicationController
   before_action :set_application, only: [ :show, :withdraw, :shortlist, :reject, :accept ]
 
-  # The host's inbox (applications received on their rooms) and the seeker's list (applications sent).
+  # The host's inbox and the seeker's list are built from the policy scope,
+  # so the query only returns applications the current user may see.
   def index
-    @received = current_user.received_applications.includes(:user, listing: { property: :neighborhood })
-                            .order(created_at: :desc)
-    @sent = current_user.applications.includes(:user, listing: { property: :neighborhood }).order(created_at: :desc)
+    applications = policy_scope(Application).includes(:user, listing: { property: :neighborhood })
+                                            .order(created_at: :desc)
+    @received = applications.where(listing: current_user.listings)
+    @sent = applications.where(user: current_user)
     @pending_count = @received.pending.count
   end
 
@@ -17,6 +19,7 @@ class ApplicationsController < ApplicationController
     @listing = Listing.find(params[:listing_id])
     @application = @listing.applications.new(application_params)
     @application.user = current_user
+    authorize @application
     if @application.save
       redirect_to @listing, status: :see_other
     else
@@ -52,8 +55,10 @@ class ApplicationsController < ApplicationController
 
   private
 
+  # Typing the id of somebody else's application in the URL ends on the "not allowed" page.
   def set_application
     @application = Application.find(params[:id])
+    authorize @application
   end
 
   def application_params
@@ -63,7 +68,7 @@ class ApplicationsController < ApplicationController
   # Re-renders every row of the room (accepting rejects the others too) and the pending count.
   def answer
     @changed = @application.listing.applications.includes(:user, listing: { property: :neighborhood })
-    @pending_count = current_user.received_applications.pending.count
+    @pending_count = policy_scope(Application).where(listing: current_user.listings).pending.count
     respond_to do |format|
       format.turbo_stream { render :answer }
       format.html { redirect_to applications_path, status: :see_other }

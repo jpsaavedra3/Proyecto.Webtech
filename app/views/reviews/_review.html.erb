@@ -1,11 +1,13 @@
 <article class="border rounded p-3 mb-3">
   <p class="mb-1"><strong><%= review.user.name %></strong> · <%= review.rating %>/5</p>
   <p class="mb-2"><%= review.comment %></p>
-  <% if review.user == current_user %>
-    <div class="d-flex gap-2">
+  <div class="d-flex gap-2">
+    <% if policy(review).update? %>
       <%= link_to "Edit", edit_review_path(review), class: "btn btn-sm btn-outline-secondary" %>
+    <% end %>
+    <% if policy(review).destroy? %>
       <%= button_to "Delete", review, method: :delete, class: "btn btn-sm btn-outline-danger",
-                    form: { data: { turbo_confirm: "Delete your review?" } } %>
-    </div>
-  <% end %>
+                    form: { data: { turbo_confirm: "Delete this review?" } } %>
+    <% end %>
+  </div>
 </article>

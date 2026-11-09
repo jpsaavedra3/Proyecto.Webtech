@@ -4,11 +4,13 @@ class VisitsController < ApplicationController
   def new
     @application = Application.find(params[:application_id])
     @visit = @application.visits.new
+    authorize @visit
   end
 
   def create
     @application = Application.find(params[:application_id])
     @visit = @application.visits.new(visit_params)
+    authorize @visit
     if @visit.save
       redirect_to @application, notice: "Visit proposed."
     else
@@ -44,6 +46,7 @@ class VisitsController < ApplicationController
 
   def set_visit
     @visit = Visit.find(params[:id])
+    authorize @visit
   end
 
   def visit_params

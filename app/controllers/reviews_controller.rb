@@ -5,6 +5,7 @@ class ReviewsController < ApplicationController
     @property = Property.find(params[:property_id])
     @review = @property.reviews.new(review_params)
     @review.user = current_user
+    authorize @review
     if @review.save
       redirect_to @property, notice: "Thanks for your review."
     else
@@ -32,6 +33,7 @@ class ReviewsController < ApplicationController
 
   def set_review
     @review = Review.find(params[:id])
+    authorize @review
   end
 
   def review_params

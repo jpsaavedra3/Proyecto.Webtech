@@ -1,6 +1,8 @@
 <%= turbo_frame_tag "application" do %>
   <div class="border rounded p-3">
-    <% if listing.property.user == current_user %>
+    <% if current_user.nil? %>
+      <p class="mb-0"><%= link_to "Sign in", new_session_path, data: { turbo_frame: "_top" } %> to apply for this room.</p>
+    <% elsif listing.property.user == current_user %>
       <p class="mb-0 text-muted">This is your room, so you cannot apply to it.</p>
     <% elsif application.persisted? %>
       <p class="mb-1">You applied on <%= l(application.created_at.to_date, format: :long) %>.</p>

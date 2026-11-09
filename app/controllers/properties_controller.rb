@@ -7,17 +7,18 @@ class PropertiesController < ApplicationController
   end
 
   def show
-    @listings = @property.listings.with_attached_photos.includes(property: :neighborhood)
-    @listings = @listings.published unless @property.user == current_user
+    @listings = policy_scope(@property.listings.with_attached_photos.includes(property: :neighborhood))
     @reviewable_visit = current_user&.reviewable_visit_for(@property)
   end
 
   def new
     @property = Property.new
+    authorize @property
   end
 
   def create
     @property = current_user.properties.new(property_params)
+    authorize @property
     if @property.save
       redirect_to @property, notice: "Property created."
     else
@@ -48,6 +49,7 @@ class PropertiesController < ApplicationController
 
   def set_property
     @property = Property.find(params[:id])
+    authorize @property
   end
 
   def property_params

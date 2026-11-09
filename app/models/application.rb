@@ -1,4 +1,9 @@
 class Application < ApplicationRecord
+  # Pundit would look for ApplicationPolicy, which is the base policy.
+  def self.policy_class
+    RoomApplicationPolicy
+  end
+
   belongs_to :listing
   belongs_to :user
   has_many :visits

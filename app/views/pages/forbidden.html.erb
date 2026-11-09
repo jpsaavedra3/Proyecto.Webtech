@@ -1,0 +1,12 @@
+<% content_for :title, "Not allowed" %>
+
+<section class="container py-5">
+  <h1>You are not allowed to do that</h1>
+  <p class="lead">Your account does not have permission to see this page or to do this action.</p>
+  <p>Rooms, properties and their applications can only be changed by their owner, and some actions are only for
+    moderators.</p>
+  <% unless current_user %>
+    <p>If you have an account, <%= link_to "sign in", new_session_path %> and try again.</p>
+  <% end %>
+  <%= link_to "Back to Roomies", root_path, class: "btn btn-primary" %>
+</section>
