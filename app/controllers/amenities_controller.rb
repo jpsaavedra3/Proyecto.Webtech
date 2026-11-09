@@ -2,15 +2,18 @@ class AmenitiesController < ApplicationController
   before_action :set_amenity, only: %i[edit update destroy]
 
   def index
-    @amenities = Amenity.order(:name)
+    authorize Amenity
+    @amenities = policy_scope(Amenity).order(:name)
   end
 
   def new
     @amenity = Amenity.new
+    authorize @amenity
   end
 
   def create
     @amenity = Amenity.new(amenity_params)
+    authorize @amenity
 
     if @amenity.save
       redirect_to amenities_path,
@@ -23,9 +26,11 @@ class AmenitiesController < ApplicationController
   end
 
   def edit
+    authorize @amenity
   end
 
   def update
+    authorize @amenity
     if @amenity.update(amenity_params)
       redirect_to amenities_path,
                   notice: "Amenity updated successfully.",
@@ -37,6 +42,7 @@ class AmenitiesController < ApplicationController
   end
 
   def destroy
+    authorize @amenity
     if @amenity.destroy
       redirect_to amenities_path,
                   notice: "Amenity deleted successfully.",

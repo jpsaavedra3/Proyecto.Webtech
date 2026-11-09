@@ -3,6 +3,8 @@ require "test_helper"
 
 class NeighborhoodsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @moderator = users(:moderator)
+    sign_in_as(@moderator)
     @neighborhood = Neighborhood.create!(name: "Test District")
   end
 

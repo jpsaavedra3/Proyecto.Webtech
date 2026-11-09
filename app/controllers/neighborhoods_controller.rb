@@ -3,21 +3,25 @@ class NeighborhoodsController < ApplicationController
   before_action :set_neighborhood, only: %i[show edit update destroy]
 
   def index
-    @neighborhoods = Neighborhood.includes(:properties).order(:name)
+    authorize Neighborhood
+    @neighborhoods = policy_scope(Neighborhood).includes(:properties).order(:name)
   end
 
   def show
     @listings = @neighborhood.listings
                              .published
                              .includes(property: :neighborhood)
+    authorize @neighborhood
   end
 
   def new
     @neighborhood = Neighborhood.new
+    authorize @neighborhood
   end
 
   def create
     @neighborhood = Neighborhood.new(neighborhood_params)
+    authorize @neighborhood
 
     if @neighborhood.save
       redirect_to neighborhoods_path,
@@ -30,9 +34,11 @@ class NeighborhoodsController < ApplicationController
   end
 
   def edit
+    authorize @neighborhood
   end
 
   def update
+    authorize @neighborhood
     if @neighborhood.update(neighborhood_params)
       redirect_to neighborhoods_path,
                   notice: "Neighborhood updated successfully.",
@@ -44,6 +50,7 @@ class NeighborhoodsController < ApplicationController
   end
 
   def destroy
+    authorize @neighborhood
     if @neighborhood.destroy
       redirect_to neighborhoods_path,
                   notice: "Neighborhood deleted successfully.",

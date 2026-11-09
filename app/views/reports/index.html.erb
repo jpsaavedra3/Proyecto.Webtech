@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <h1>Reports</h1>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Listing</th>
+        <th>Reason</th>
+        <th>User</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @reports.each do |report| %>
+        <tr>
+          <td>
+            <%= link_to report.listing.id,
+                listing_path(report.listing) %>
+          </td>
+
+          <td><%= report.reason %></td>
+          <td><%= report.user.email_address %></td>
+          <td><%= report.status.humanize %></td>
+
+          <td>
+            <% if report.pending? %>
+              <div class="d-flex gap-2">
+                <%= button_to "Resolve",
+                    resolve_report_path(report),
+                    method: :patch,
+                    class: "btn btn-success btn-sm" %>
+
+                <%= button_to "Dismiss",
+                    dismiss_report_path(report),
+                    method: :patch,
+                    class: "btn btn-danger btn-sm" %>
+              </div>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

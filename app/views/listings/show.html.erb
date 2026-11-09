@@ -62,4 +62,28 @@
   <% end %>
 
   <%= link_to "All rooms", listings_path, class: "btn btn-outline-secondary mt-3" %>
+  
+  <% if policy(Report).create? %>
+    <div class="card mt-4">
+      <div class="card-body">
+        <h5>Report this listing</h5>
+
+        <%= form_with model: Report.new,
+            url: listing_reports_path(@listing) do |f| %>
+
+          <div class="mb-3">
+            <%= f.label :reason, "Reason",
+                class: "form-label" %>
+
+            <%= f.text_area :reason,
+                class: "form-control",
+                required: true %>
+          </div>
+
+          <%= f.submit "Submit report",
+              class: "btn btn-outline-danger" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </section>

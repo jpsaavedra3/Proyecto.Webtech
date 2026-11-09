@@ -3,6 +3,8 @@ require "test_helper"
 
 class AmenitiesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @moderator = users(:moderator)
+    sign_in_as(@moderator)
     @amenity = Amenity.create!(name: "Test WiFi")
   end
 
