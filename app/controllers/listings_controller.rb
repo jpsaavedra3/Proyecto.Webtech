@@ -2,8 +2,9 @@ class ListingsController < ApplicationController
   allow_unauthenticated_access only: [ :index, :show ]
   before_action :set_listing, only: [ :show, :edit, :update, :destroy, :publish, :withdraw, :mark_rented ]
 
+  # The rooms are loaded by search_controller.js from the API.
   def index
-    @listings = Listing.published.with_attached_photos.includes(property: :neighborhood).order(:available_from)
+    @neighborhoods = Neighborhood.order(:name)
   end
 
   def show

@@ -1,13 +1,27 @@
-<% content_for :title, "Rooms" %>
+<% content_for :title, "Search rooms" %>
 
-<section class="container py-5">
-  <h1>Available rooms</h1>
+<section class="container py-5" data-controller="search">
+  <h1>Search rooms</h1>
 
-  <% if @listings.empty? %>
-    <p class="text-muted">There are no published rooms right now.</p>
-  <% else %>
-    <div class="row g-4">
-      <%= render @listings %>
+  <form class="row g-3 align-items-end mb-4" data-search-target="form" data-action="submit->search#search change->search#search">
+    <div class="col-md-3">
+      <%= label_tag :neighborhood_id, "Neighborhood", class: "form-label" %>
+      <%= select_tag :neighborhood_id, options_from_collection_for_select(@neighborhoods, :id, :name, params[:neighborhood_id]),
+                     include_blank: "Any neighborhood", class: "form-select" %>
     </div>
-  <% end %>
+    <div class="col-md-3">
+      <%= label_tag :max_rent, "Maximum rent", class: "form-label" %>
+      <%= number_field_tag :max_rent, params[:max_rent], min: 1, placeholder: "400000", class: "form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= label_tag :available_from, "Available from", class: "form-label" %>
+      <%= date_field_tag :available_from, params[:available_from], class: "form-control" %>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+  </form>
+
+  <p class="text-muted" data-search-target="status"></p>
+  <div class="row g-4" data-search-target="results"></div>
 </section>
