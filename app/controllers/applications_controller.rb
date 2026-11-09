@@ -21,6 +21,7 @@ class ApplicationsController < ApplicationController
     @application.user = current_user
     authorize @application
     if @application.save
+      HostMailer.with(application: @application).new_application.deliver_later
       redirect_to @listing, status: :see_other
     else
       render partial: "applications/frame", locals: { listing: @listing, application: @application },

@@ -1,0 +1,5 @@
+Hi <%= @host.name %>,
+
+<%= @application.user.name %> applied to your room in <%= @listing.property.neighborhood.name %> (<%= @listing.property.address %>) and would like to move in on <%= l(@application.move_in_date, format: :long) %>.
+
+Read the application: <%= application_url(@application) %>

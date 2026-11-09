@@ -1,0 +1,10 @@
+<h1>New application for your room</h1>
+
+<p>Hi <%= @host.name %>,</p>
+
+<p>
+  <%= @application.user.name %> applied to your room in <%= @listing.property.neighborhood.name %>
+  (<%= @listing.property.address %>) and would like to move in on <%= l(@application.move_in_date, format: :long) %>.
+</p>
+
+<p><%= link_to "Read the application", application_url(@application) %></p>
